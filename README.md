@@ -6,4 +6,4 @@ Usage: For every incorrect answer, the user loses 10 seconds of their total time
 
 See it in action [here](https://sbeltier.github.io/coding-quiz/)!
 
-![screenshot-coding-quiz](https://user-images.githubusercontent.com/43533765/124704133-6d075080-dea8-11eb-8bb3-873f25d0f3ba.png)
+![screenshot-coding-quiz](https://user-images.githubusercontent.com/43533765/124704265-a2ac3980-dea8-11eb-895a-a7640b28c7cc.png)
