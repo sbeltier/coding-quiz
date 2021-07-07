@@ -22,6 +22,7 @@ If we click the start game button:
 
 // Global Variables
 var button_divMainBox = document.getElementById("start-game");
+var topBar = document.querySelector('.top-bar')
 var divMainBox = document.querySelector(".main-box-inactive");
 var counter_divTopBar = document.getElementById("counter");
 var header_divMainBox = document.querySelector("header");
@@ -33,6 +34,12 @@ var timerOnPage = document.getElementById("counter")
 var secondsLeft = 75;
 var timerInterval = "";
 var buttonArr = [];
+var submitScoreButton = "";
+
+var highScoreBoard = {};
+
+var inputName = "";
+  
 
 
 //TODO: make questions an array of objects
@@ -142,10 +149,14 @@ function showQuestions (questionNumber) {
                                 divMainBox.appendChild(submitScore);
                                 submitScore.setAttribute("type", "text");
                                 submitScore.setAttribute("placeholder", "Type your initials");
-                                var submitScoreButton = document.createElement('button');
+                                submitScore.setAttribute('id', 'name')
+                                submitScore.setAttribute('name', 'name')
+                                submitScoreButton = document.createElement('button');
                                 divMainBox.appendChild(submitScoreButton);
                                 submitScoreButton.textContent = "Submit Score"
-                                submitScoreButton.className = "answerButton"                            
+                                submitScoreButton.className = "answerButton"
+                                submitScoreButton.addEventListener('click', storeData);
+                                                           
                                 }
                 })
                 results_div.appendChild(nextQuestion);
@@ -204,6 +215,52 @@ button_divMainBox.addEventListener("click", startGame)
 
 
 
+// function to store input data as an object
+function storeData () {
+    inputName = document.getElementById("name")
+    var user = {
+        score: (secondsLeft - 1),
+        name: inputName.value
+    }
+
+    // {HighScores: [ {user1}, {user2}]}
+
+    // for (i = 0; i < user.length; i++)
+// {
+    var highScoreBoard = [];
+    if (localStorage.getItem("HighScores") != null && (localStorage.getItem("HighScores") != undefined)) {
+        highScoreBoard = JSON.parse(localStorage.getItem("HighScores"))
+    } else {
+        highScoreBoard = { HighScores: [] }
+    }
+    
+    highScoreBoard.HighScores.push({Score: (secondsLeft-1), name: inputName.value});
+    // highScoreBoard.push(inputName.value);
+// }
+
+
+    localStorage.setItem('HighScores', JSON.stringify(highScoreBoard))
+    scoreSubmitted ()
+
+}
+    
+
+function scoreSubmitted () {
+    submitScoreButton.className = "hide"
+    inputName.className = "hide"
+    header_divMainBox.textContent = "Score submitted!"
+
+    var resetButton = document.createElement('button');
+    divMainBox.appendChild(resetButton);
+    resetButton.textContent = "Reset"
+    resetButton.className = "answerButton"
+    resetButton.addEventListener('click', resetFunction)
+}
+
+
+
+
+
 // Timer
 function setTime() {
     // Sets interval in variable
@@ -241,9 +298,36 @@ var timeCounter = function() {
                 }
           
         if (header_divMainBox.classList.contains("final-score")) {
-          
           clearInterval(timerInterval);
           return;
         }
 
-}  
+} 
+
+
+var viewScores = document.getElementById('view-high-scores')
+viewScores.addEventListener('click', function () {
+    var newBox = document.createElement("div")
+    highScoreBoard = JSON.parse(localStorage.getItem("HighScores"))
+    var scoreText = "";
+    for (var i = 0; i < highScoreBoard.HighScores.length; i++) {
+        console.log(highScoreBoard.HighScores[i])
+        scoreText += ("<p>Name: " + highScoreBoard.HighScores[i].name + " - Score: " + highScoreBoard.HighScores[i].Score + "</p>")
+    }
+    newBox.innerHTML = scoreText;
+    topBar.appendChild(newBox)
+    viewScores.setAttribute('style', 'display: none;')
+
+    var hideScoresButton = document.createElement('button');
+    newBox.prepend(hideScoresButton);
+    hideScoresButton.textContent = "Hide Scores"
+    hideScoresButton.className = "answerButton"
+    hideScoresButton.addEventListener('click', function (){
+        hideScoresButton.setAttribute('style', 'display: none;')
+        viewScores.setAttribute('style', 'display: inline;')
+        newBox.textContent = "";
+    })
+
+    })
+
+    

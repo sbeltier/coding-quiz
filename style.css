@@ -91,6 +91,21 @@ button {
     height: 100%;
 }
 
+.resetButton {
+    color: white;
+    background-color: purple;
+    font-size: medium;
+    display: inline;
+    padding: 3px 3px 3px 3px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    margin-left: 4px;
+    cursor: pointer;
+    border-color: purple;
+    width: 45%;
+    height: 100%;
+}
+
 .wrongAnswerButton {
     color: white;
     background-color: rgb(138, 138, 138);
